@@ -1,0 +1,113 @@
+<!doctype html><html>
+<head>
+	<title>jQuery SameHeight Demo</title>
+	<style>
+		body { margin: 0; padding: 0; font-family: Arial; }
+		H1 { margin: 0; padding: 16px; }
+		.float-wrapper::after {
+			content: ".";
+			visibility: hidden;
+			display: block;
+			height: 0;
+			clear: both;
+		}
+		.float-wrapper .item {
+			width: 50%;
+		}
+		.float-wrapper .float-left {
+			float: left;
+		}
+		.float-wrapper .item .box {
+			margin-left: 16px;
+			margin-bottom: 16px;
+			background-color: #cccccc;
+			padding: 16px;
+		}
+		.float-wrapper .item:nth-child(2n) .box {
+			margin-right: 16px;
+		}
+	</style>
+	<style>
+	.columns-wrapper {
+		-webkit-column-count: 2;
+		-moz-column-count: 2;
+		column-count: 2;
+		webkit-column-gap: 0;
+		-moz-column-gap: 0;
+		column-gap: 0;
+		margin-right: 16px;
+	}
+	.columns-wrapper .item {
+		width: 100%;
+		break-inside: avoid-column;
+	}
+	.columns-wrapper .item .box {
+		margin-left: 16px;
+		margin-bottom: 16px;
+		background-color: #cccccc;
+		padding: 16px;
+	}
+	</style>
+</head><body>
+
+	<h1>Float left, debounce: 0</h1>
+	<div id="test-float" class="float-wrapper">
+		<div class="item float-left"><div class="box">
+			finto testo finto testo finto testo
+			finto testo finto testo finto testo
+		</div></div>
+		<div class="item float-left"><div class="box">
+			finto testo finto testo finto testo
+			finto testo finto testo finto testo
+			finto testo finto testo finto testo
+			finto testo finto testo finto testo
+		</div></div>
+		<div class="item float-left"><div class="box">
+			finto testo finto testo finto testo
+		</div></div>
+	</div>
+
+	<h1>Float left, debounce: default (250ms)</h1>
+	<div id="test-float-debounce" class="float-wrapper">
+		<div class="item float-left"><div class="box">
+			finto testo finto testo finto testo
+			finto testo finto testo finto testo
+		</div></div>
+		<div class="item float-left"><div class="box">
+			finto testo finto testo finto testo
+			finto testo finto testo finto testo
+			finto testo finto testo finto testo
+			finto testo finto testo finto testo
+		</div></div>
+		<div class="item float-left"><div class="box">
+			finto testo finto testo finto testo
+		</div></div>
+	</div>
+
+	<h1>Column-count: 2, debounce: default (250ms)</h1>
+	<div id="test-float-columncount" class="columns-wrapper">
+		<div class="item"><div class="box">
+			finto testo finto testo finto testo
+			finto testo finto testo finto testo
+		</div></div>
+		<div class="item"><div class="box">
+			finto testo finto testo finto testo
+			finto testo finto testo finto testo
+			finto testo finto testo finto testo
+			finto testo finto testo finto testo
+		</div></div>
+		<div class="item"><div class="box">
+			finto testo finto testo finto testo
+		</div></div>
+	</div>
+
+	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/css-element-queries/1.0.2/ResizeSensor.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/css-element-queries/1.0.2/ElementQueries.js"></script> -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="jquery.sameheight.js"></script>
+	<script>
+		$('#test-float-debounce .item .box').sameHeight();
+		$('#test-float .item .box').sameHeight({ debounce: 0 });
+		$('#test-float-columncount .item .box').sameHeight();
+	</script>
+</body></html>

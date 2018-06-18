@@ -2,13 +2,13 @@
 
  Name: jQuery sameHeight 1.3.0
  Author: giorgio.beggiora@artigianidelweb.com
- 
+
  requestAnimationFrame polyfill by Erik Möller. fixes from Paul Irish and Tino Zijdel
  https://gist.github.com/paulirish/1579671
- 
+
  Optional dependency: CSS-Element-Queries
  http://marcj.github.io/css-element-queries/
- 
+
  This plugin sets all the matched elements' height to the highest one,
  waiting for images in them to have their height setted (i.e. when they're loaded).
  It's compatible with elements in a container with the css property column-count
@@ -20,34 +20,38 @@
 
  - responsive (boolean) [default = true] : if true, the max height depends
  from the elements' content, from css otherwise.
- 
+
  - target: if an element is given, the height will be its one.
 
- - debounce: debounce milliseconds (rounded to multiple of 16.666).
- 
+ - debounce: debounce milliseconds.
+
  - observe (window/DOM element/CSS query) [default = window]: elements which size changes must be detected.
- 
+
  */
+
+if (!Number.isFinite) Number.isFinite = function(value) {
+    return typeof value === 'number' && isFinite(value);
+}
 
 (function() {
     var lastTime = 0;
     var vendors = ['ms', 'moz', 'webkit', 'o'];
     for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
         window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
-        window.cancelAnimationFrame = window[vendors[x]+'CancelAnimationFrame'] 
+        window.cancelAnimationFrame = window[vendors[x]+'CancelAnimationFrame']
                                    || window[vendors[x]+'CancelRequestAnimationFrame'];
     }
- 
+
     if (!window.requestAnimationFrame)
         window.requestAnimationFrame = function(callback, element) {
             var currTime = new Date().getTime();
             var timeToCall = Math.max(0, 16 - (currTime - lastTime));
-            var id = window.setTimeout(function() { callback(currTime + timeToCall); }, 
+            var id = window.setTimeout(function() { callback(currTime + timeToCall); },
               timeToCall);
             lastTime = currTime + timeToCall;
             return id;
         };
- 
+
     if (!window.cancelAnimationFrame)
         window.cancelAnimationFrame = function(id) {
             clearTimeout(id);
@@ -62,15 +66,18 @@
 			compact: false,
 			responsive: true,
 			target: null,
-			debounce: 250,
 			observe: window
 		}, options );
-		
+
+		if (!Number.isFinite(settings.debounce)) {
+			settings.debounce = 250;
+		}
+
 		var rAFTimeoutHandlers = {};
 		var rAFTimeoutHandlersNextId = 0;
-		
+
 		function setRAFTimeout(callback, ms){
-			
+
 			var id, h, now = Date.now();
 			if(arguments.length > 2){
 				id = arguments[2];
@@ -80,7 +87,7 @@
 				h = { id: id, start: now };
 				rAFTimeoutHandlers[id] = h;
 			}
-			
+
 			if( h ){
 				if( now - h.start < ms ){
 					requestAnimationFrame(setRAFTimeout.bind(this, callback, ms, id));
@@ -89,7 +96,7 @@
 					callback();
 				}
 			}
-			
+
 			return id;
 		}
 
@@ -97,15 +104,14 @@
 			delete rAFTimeoutHandlers[id];
 		}
 
-		var msPerLoop = 1000 / 60;
-		if(settings.debounce > msPerLoop) msPerLoop = settings.debounce;
-		
+		var msPerLoop = settings.debounce;
+
 		var elements = this;
-		
+
 		function doTheMagic(){
-			
+
 			var $el = $(settings.target || elements);
-			
+
 			var images = $el.find('img, input[type="image"]').toArray();
 			var allImagesHaveHeight = images.every(function(img){
 				return !! ( img.complete || img.height || parseInt(img.style.height) );
@@ -114,7 +120,7 @@
 				clearRAFTimeout(handler);
 				handler = setRAFTimeout(debouncedResize, msPerLoop);
 			}
-			
+
 			var el = $el.toArray(),
 				el_length = el.length,
 				$target = $(settings.target)
@@ -125,7 +131,7 @@
 				handler = setRAFTimeout(debouncedResize, msPerLoop);
 				return;
 			}
-			
+
 			var grouped = [];
 
 			var r, c, cols, rows;
@@ -193,9 +199,9 @@
 				}
 				$(g).height(maxHeight);
 			}
-			
+
 		}
-		
+
 		var handler;
 		function debouncedResize(){
 			clearRAFTimeout(handler);
@@ -203,27 +209,28 @@
 			if(!$el.length) return false;
 			handler = setRAFTimeout(doTheMagic, msPerLoop);
 		}
-		
+
 		var observeType = Object.prototype.toString.call( settings.observe );
 		var observeWhat = '';
-		
-		if( observeType === '[object String]' ){
+
+		if ( observeType === '[object String]' ) {
 			observeWhat = 'query';
-		}if( observeType === '[object Window]' ){
+		} if ( observeType === '[object Window]' ) {
 			observeWhat = 'window';
-		}else if( observeType === '[object HTMLCollection]' ){
+		} else if ( observeType === '[object HTMLCollection]' ) {
 			observeWhat = 'element';
-		}else if( observeType.indexOf('[object HTML') === 0 ){
+		} else if ( observeType.indexOf('[object HTML') === 0 ) {
 			observeWhat = 'element';
 		}
-		
-		if(observeWhat === 'window'){
-			
+
+		if (observeWhat === 'window') {
+
 			$([settings.observe, settings.observe.document]).on('load resize', debouncedResize);
-			
-		}else if(observeWhat){
-			
+
+		} else if(observeWhat) {
+
 			if(typeof ResizeSensor !== 'undefined'){
+				console.log('observe')
 				$(settings.observe).each(function(){
 					new ResizeSensor(this, debouncedResize);
 				});
@@ -248,9 +255,9 @@
 					setRAFTimeout(resizeLoop, msPerLoop);
 				})();
 			}
-			
+
 		}
-		
+
 		debouncedResize();
 
 		return this;

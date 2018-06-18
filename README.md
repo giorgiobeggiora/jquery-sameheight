@@ -11,7 +11,7 @@ It's compatible with elements in a container with the css property **column-coun
 - compact (boolean) [default = false] : each row will have its own height.
 - responsive (boolean) [default = true] : if true, the max height depends from the elements' content, from css otherwise.
 - target (DOM element): if given, the height will be its one
-- debounce (number): debounce milliseconds (rounded to multiple of 1/60).
+- debounce (number): debounce milliseconds.
 - observe (window/DOM element/CSS query) [default = window]: elements which size changes must be detected.
 
 ## Smooth resize
