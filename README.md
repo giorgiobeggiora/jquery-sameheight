@@ -4,7 +4,7 @@ This jQuery plugin sets all the matched elements' height to the highest one with
 
 The plugin will manage **image loading** (elements will be resized when contained images will have their own height setted, i.e. during their download).
 
-It's compatible with elements in a container with the css property `column-count` greater than 1.
+It's compatible with elements contained in a [CSS columns](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Columns) layout.
 
 ## Returns
 
