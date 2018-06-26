@@ -1,6 +1,6 @@
 /*
 
- Name: jQuery sameHeight 1.3.0
+ Name: jQuery sameHeight 1.4.0
  Author: giorgio.beggiora@artigianidelweb.com
 
  requestAnimationFrame polyfill by Erik Möller. fixes from Paul Irish and Tino Zijdel
