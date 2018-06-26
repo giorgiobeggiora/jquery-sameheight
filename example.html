@@ -1,9 +1,26 @@
 <!doctype html><html>
 <head>
 	<title>jQuery SameHeight Demo</title>
+	<meta charset="utf-8" />
 	<style>
-		body { margin: 0; padding: 0; font-family: Arial; }
-		H1 { margin: 0; padding: 16px; }
+		body { margin: 0; padding: 0; font-family: Arial; font-size: 10px; }
+		form { margin: 0; padding: 16px 16px 16px 0; }
+		label { display: block; }
+		h1 { margin: 0; padding: 16px; }
+		table { width: 100%; }
+		.first-letter { font-size: 2em;	}
+		.box { background-color: #cccccc; height: 100px; }
+	</style>
+	<style>
+		.target .item {
+			width: 50%;
+			margin: 16px auto;
+		}
+		.target .box {
+			padding: 16px;
+		}
+	</style>
+	<style>
 		.float-wrapper::after {
 			content: ".";
 			visibility: hidden;
@@ -20,7 +37,6 @@
 		.float-wrapper .item .box {
 			margin-left: 16px;
 			margin-bottom: 16px;
-			background-color: #cccccc;
 			padding: 16px;
 		}
 		.float-wrapper .item:nth-child(2n) .box {
@@ -29,85 +45,262 @@
 	</style>
 	<style>
 	.columns-wrapper {
-		-webkit-column-count: 2;
-		-moz-column-count: 2;
 		column-count: 2;
-		webkit-column-gap: 0;
-		-moz-column-gap: 0;
 		column-gap: 0;
 		margin-right: 16px;
 	}
 	.columns-wrapper .item {
 		width: 100%;
-		break-inside: avoid-column;
+		overflow: hidden; /* firefox and IE 10-11 */
+		-webkit-column-break-inside: avoid;
+		break-inside: avoid;
 	}
 	.columns-wrapper .item .box {
 		margin-left: 16px;
 		margin-bottom: 16px;
-		background-color: #cccccc;
+		padding: 16px;
+	}
+	</style>
+	<style>
+	.flex-wrapper {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: flex-start;
+		align-content: flex-start;
+	}
+	.flex-wrapper .item {
+		width: 50%;
+	}
+	.flex-wrapper .item .box {
+		margin-left: 16px;
+		margin-bottom: 16px;
 		padding: 16px;
 	}
 	</style>
 </head><body>
+	<table border="0" cellpadding="0" cellspacing="0">
+		<tr valign="top">
+			<td class="demo">
+				<div class="target" id="target" style="display: none;">
+					<h1>target</h1>
+					<div class="item"><div class="box">
+						<span class="first-letter">T</span>
+						lorem ipsum lorem ipsum lorem ipsum
+						lorem ipsum lorem ipsum lorem ipsum
+						lorem ipsum lorem ipsum lorem ipsum
+						lorem ipsum lorem ipsum lorem ipsum
+						lorem ipsum lorem ipsum lorem ipsum
+						lorem ipsum lorem ipsum lorem ipsum
+						lorem ipsum lorem ipsum lorem ipsum
+						lorem ipsum lorem ipsum lorem ipsum
+					</div></div>
+				</div>
+				<h1>float: left;</h1>
+				<div id="test-float" class="float-wrapper">
+					<div class="item float-left"><div class="box">
+						<span class="first-letter">A</span>
+						lorem ipsum lorem ipsum lorem ipsum
+						lorem ipsum lorem ipsum lorem ipsum
+					</div></div>
+					<div class="item float-left"><div class="box">
+						<span class="first-letter">B</span>
+						lorem ipsum lorem ipsum lorem ipsum
+						lorem ipsum lorem ipsum lorem ipsum
+						lorem ipsum lorem ipsum lorem ipsum
+						lorem ipsum lorem ipsum lorem ipsum
+					</div></div>
+					<div class="item float-left"><div class="box">
+						<span class="first-letter">C</span>
+						lorem ipsum lorem ipsum lorem ipsum
+					</div></div>
+				</div>
 
-	<h1>Float left, debounce: 0</h1>
-	<div id="test-float" class="float-wrapper">
-		<div class="item float-left"><div class="box">
-			finto testo finto testo finto testo
-			finto testo finto testo finto testo
-		</div></div>
-		<div class="item float-left"><div class="box">
-			finto testo finto testo finto testo
-			finto testo finto testo finto testo
-			finto testo finto testo finto testo
-			finto testo finto testo finto testo
-		</div></div>
-		<div class="item float-left"><div class="box">
-			finto testo finto testo finto testo
-		</div></div>
-	</div>
+				<h1>column-count: 2;</h1>
+				<div id="test-columns" class="columns-wrapper">
+					<div class="item"><div class="box">
+						<span class="first-letter">A</span>
+						lorem ipsum lorem ipsum lorem ipsum
+						lorem ipsum lorem ipsum lorem ipsum
+					</div></div>
+					<div class="item"><div class="box">
+						<span class="first-letter">B</span>
+						lorem ipsum lorem ipsum lorem ipsum
+						lorem ipsum lorem ipsum lorem ipsum
+						lorem ipsum lorem ipsum lorem ipsum
+						lorem ipsum lorem ipsum lorem ipsum
+					</div></div>
+					<div class="item"><div class="box">
+						<span class="first-letter">C</span>
+						lorem ipsum lorem ipsum lorem ipsum
+					</div></div>
+				</div>
 
-	<h1>Float left, debounce: default (250ms)</h1>
-	<div id="test-float-debounce" class="float-wrapper">
-		<div class="item float-left"><div class="box">
-			finto testo finto testo finto testo
-			finto testo finto testo finto testo
-		</div></div>
-		<div class="item float-left"><div class="box">
-			finto testo finto testo finto testo
-			finto testo finto testo finto testo
-			finto testo finto testo finto testo
-			finto testo finto testo finto testo
-		</div></div>
-		<div class="item float-left"><div class="box">
-			finto testo finto testo finto testo
-		</div></div>
-	</div>
-
-	<h1>Column-count: 2, debounce: default (250ms)</h1>
-	<div id="test-float-columncount" class="columns-wrapper">
-		<div class="item"><div class="box">
-			finto testo finto testo finto testo
-			finto testo finto testo finto testo
-		</div></div>
-		<div class="item"><div class="box">
-			finto testo finto testo finto testo
-			finto testo finto testo finto testo
-			finto testo finto testo finto testo
-			finto testo finto testo finto testo
-		</div></div>
-		<div class="item"><div class="box">
-			finto testo finto testo finto testo
-		</div></div>
-	</div>
+				<h1>display: flex;</h1>
+				<div id="test-flex" class="flex-wrapper">
+					<div class="item"><div class="box">
+						<span class="first-letter">A</span>
+						lorem ipsum lorem ipsum lorem ipsum
+						lorem ipsum lorem ipsum lorem ipsum
+					</div></div>
+					<div class="item"><div class="box">
+						<span class="first-letter">B</span>
+						lorem ipsum lorem ipsum lorem ipsum
+						lorem ipsum lorem ipsum lorem ipsum
+						lorem ipsum lorem ipsum lorem ipsum
+						lorem ipsum lorem ipsum lorem ipsum
+					</div></div>
+					<div class="item"><div class="box">
+						<span class="first-letter">C</span>
+						lorem ipsum lorem ipsum lorem ipsum
+					</div></div>
+				</div>
+			</td>
+			<td class="controls" nowrap>
+				<form>
+					<b>OPTIONS</b><br />
+					<br />
+					<a href="https://github.com/giorgiobeggiora/jquery-sameheight" target="_blank" rel="noopener">Documentation</a><br />
+					<br />
+					The first value is the default one.<br />
+					<br />
+					<b>observe</b><br />
+					<label title="window"><input type="radio" name="observe" value="window" /> Observe window</label>
+					<label title="body"><input type="radio" name="observe" value="body" /> Observe body</label>
+					<br />
+					<b>debounce</b><br />
+					<label title="0"><input type="radio" name="debounce" value="0" /> 0ms</label>
+					<label title="250"><input type="radio" name="debounce" value="250" /> 250ms</label>
+					<br />
+					<b>responsive</b><br />
+					<label title="true"><input type="radio" name="responsive" value="true" /> ignore element's CSS height</label>
+					<label title="false"><input type="radio" name="responsive" value="false" /> consider element's CSS height</label>
+					<br />
+					<b>compact</b><br />
+					<label title="false"><input type="radio" name="compact" value="false" /> each row has the same height</label>
+					<label title="true"><input type="radio" name="compact" value="true" /> each row has its own height</label>
+					<br />
+					<b>target</b><br />
+					<label title="null"><input type="radio" name="target" value="null" /> matched elements</label>
+					<label title="document.getElementById('target')"><input type="radio" name="target" value="target" /> target element</label>
+					<br />
+					<b>columnCount</b><br />
+					<label title="1"><input type="radio" name="columnCount" value="1" /> 1</label>
+					<label title="num"><input type="radio" name="columnCount" value="num" /> (number)</label>
+					<label title="calc"><input type="radio" name="columnCount" value="calc" /> calc</label>
+				</form>
+			</td>
+		</tr>
+	</table>
 
 	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/css-element-queries/1.0.2/ResizeSensor.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/css-element-queries/1.0.2/ElementQueries.js"></script> -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="jquery.sameheight.js"></script>
+
 	<script>
-		$('#test-float-debounce .item .box').sameHeight();
-		$('#test-float .item .box').sameHeight({ debounce: 0 });
-		$('#test-float-columncount .item .box').sameHeight();
+		var options = {
+			compact: false,
+			responsive: true,
+			target: null,
+			observe: window,
+			debounce: 0,
+			columnCount: 1
+		};
+
+		function convertToOptionsValue (key, value) {
+			switch (key) {
+				case 'compact':     return value === 'true' ;                                        break;
+				case 'responsive':  return value === 'true' ;                                        break;
+				case 'observe':     return value === 'window' ? window : document.body ;             break;
+				case 'debounce':    return value === '250' ? Number(value) : 0 ;                     break;
+				case 'target':      return value === 'target' ? $('#target .box') : null;            break;
+				case 'columnCount': return ['calc','num','1'].indexOf(value) !== -1 ? value : 'num'; break;
+				default:            return void 0;                                                   break;
+			}
+		}
+
+		function convertToQueryValue (key, value) {
+			switch (key) {
+				case 'compact':     return String(value);                         break;
+				case 'responsive':  return String(value);                         break;
+				case 'observe':     return value === window ? 'window' : 'body' ; break;
+				case 'debounce':    return String(value);                         break;
+				case 'target':      return value === null ? 'null' : 'target' ;   break;
+				case 'columnCount': return String(value);                         break;
+				default:            return void 0;                                break;
+			}
+		}
+
+		var queryEntries = location.search.match(/(?:[^\&\?])+/g) || [];
+		queryEntries.forEach(function(entry){
+			var param = entry.split('=');
+			var key = param[0], value = convertToOptionsValue(key, param[1]);
+			if (value !== void 0) options[key] = value;
+		});
+
+		Object.keys(options).forEach(function(key){
+			var value = convertToQueryValue(key, options[key]);
+			if (value !== void 0) $('input[name="' + key + '"][value="' + value + '"]').prop('checked', true);
+		});
+
+		function reloadWithOptions(ev) {
+			var key = ev.target.name, value = convertToOptionsValue(key, ev.target.value);
+			if (value !== void 0) options[key] = value;
+			var queryString = Object.keys(options).map(function(key){
+				return key + '=' + convertToQueryValue(key, options[key]);
+			}).join("&");
+			location.href = location.pathname + '?' + queryString;
+		}
+
+		$('input[name="observe"]').on('click', reloadWithOptions);
+		$('input[name="debounce"]').on('click', reloadWithOptions);
+		$('input[name="responsive"]').on('click', reloadWithOptions);
+		$('input[name="compact"]').on('click', reloadWithOptions);
+		$('input[name="target"]').on('click', reloadWithOptions);
+		$('input[name="columnCount"]').on('click', reloadWithOptions);
+
+		if (options.target) $('#target').show();
+
+		var columnCount;
+		var handler0;
+		var handler1;
+		var handler2;
+
+		function startObserve() {
+
+			columnCount = options.columnCount;
+			if (columnCount === 'num') columnCount = 1;
+			handler0 = $('#test-float .item .box').sameHeight({
+				compact: options.compact,
+				responsive: options.responsive,
+				target: options.target,
+				observe: options.observe,
+				debounce: options.debounce,
+				columnCount: columnCount
+			});
+
+			columnCount = options.columnCount;
+			if (columnCount === 'num') columnCount = $('.columns-wrapper').css('column-count');
+			handler1 = $('#test-columns .item .box').sameHeight({
+				compact: options.compact,
+				responsive: options.responsive,
+				target: options.target,
+				observe: options.observe,
+				debounce: options.debounce,
+				columnCount: columnCount
+			});
+
+			columnCount = options.columnCount;
+			if (columnCount === 'num') columnCount = 1;
+			handler2 = $('#test-flex .item .box').sameHeight({
+				compact: options.compact,
+				responsive: options.responsive,
+				target: options.target,
+				observe: options.observe,
+				debounce: options.debounce,
+				columnCount: columnCount
+			});
+
+		}
 	</script>
 </body></html>
