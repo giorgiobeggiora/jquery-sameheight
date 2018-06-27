@@ -30,7 +30,7 @@
 
  - columnCount (number/string) [default = 1]: closest ancestor's CSS column-count
    property's value ('auto' is not supported).
-   If set as 'calc', each time the resize event is triggered the DOM will be traversed
+   If set to 'calc', each time the resize event is triggered the DOM will be traversed
    upward until an element with a column-count value greater than 1 will be found,
    so it's better to avoid it and explicitly set a number.
 
