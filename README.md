@@ -2,6 +2,8 @@
 
 This jQuery plugin sets all the matched elements' height to the highest one without explicitly setting it.
 
+See a demo: https://giorgiobeggiora.github.io/jquery-sameheight/example.html
+
 The plugin will manage **image loading** (elements will be resized when contained images will have their own height setted, i.e. during their download).
 
 It can handle elements contained in a [CSS columns](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Columns) layout.
