@@ -15,7 +15,7 @@ An instance of the observer with the `stop()` method to stop listening the resiz
 - `compact` *(boolean, default = false)*: each row will have its own height.
 - `responsive` *(boolean, default = true)*: if true, the max height depends from the elements' content, from css otherwise.
 - `target` *(DOM element)*: if given, the height will be its one
-- `debounce` *(number)*: debounce in milliseconds, rounded by requestAnimationFrame.
+- `debounce` *(number)*: debounce in milliseconds (will be rounded by requestAnimationFrame).
 - `observe` *(window|DOM element, default = window)*: elements which size changes must be detected.
 - `columnCount` *(number|string, default = 1)*: closest ancestor's CSS column-count property's value ('auto' is not supported). If set as 'calc', each time the resize event is triggered the DOM will be traversed upward until an element with a column-count value greater than 1 will be found, so it's better to avoid it and explicitly set a number.
 
