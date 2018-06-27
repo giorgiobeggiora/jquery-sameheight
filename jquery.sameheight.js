@@ -50,29 +50,16 @@ if (!Number.isInteger) Number.isInteger = function(value) {
 
 ;(function() {
 
-    var lastTime = 0;
-    var vendors = ['ms', 'moz', 'webkit', 'o'];
-    for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
-        window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
-        window.cancelAnimationFrame = window[vendors[x]+'CancelAnimationFrame']
-                                   || window[vendors[x]+'CancelRequestAnimationFrame'];
-    }
-
-    if (!window.requestAnimationFrame) {
-        window.requestAnimationFrame = function(callback, element) {
-            var currTime = new Date().getTime();
-            var timeToCall = Math.max(0, 16 - (currTime - lastTime));
-            var id = window.setTimeout(function() { callback(currTime + timeToCall); },
-              timeToCall);
-            lastTime = currTime + timeToCall;
-            return id;
-        };
+	if (!window.requestAnimationFrame) {
+		window.requestAnimationFrame = window.mozRequestAnimationFrame
+	    || window.webkitRequestAnimationFrame
+	    || window.msRequestAnimationFrame
+	    || function(f){return setTimeout(f, 1000/60)}
 	}
 
-    if (!window.cancelAnimationFrame) {
-        window.cancelAnimationFrame = function(id) {
-            clearTimeout(id);
-        };
+	if (!window.cancelAnimationFrame) {
+		window.cancelAnimationFrame = window.mozCancelAnimationFrame
+		|| function(requestID){clearTimeout(requestID)}
 	}
 
 }());
@@ -148,7 +135,7 @@ if (!Number.isInteger) Number.isInteger = function(value) {
 					this.observerHandler.detach();
 				break;
 				case 'requestAnimationFrame':
-					cancelAnimationFrame(this.observerHandler);
+					clearRAFTimeout(this.observerHandler);
 				break;
 			}
 		}
@@ -378,27 +365,26 @@ if (!Number.isInteger) Number.isInteger = function(value) {
 				newInstance.observerHandler = rs;
 			break;
 			case 'requestAnimationFrame':
-			var oldw = [], oldh = [];
-			function resizeLoop(instance){
-				var neww = [], newh = [];
-				var settings = instance.settings;
-				instance.$el.each(function(i, element){
-					var $element = $(element);
-					neww.push($element.width());
-					newh.push($element.height());
-				});
-				var i = neww.length;
-				while(i--){
-					if( neww[i] !== oldw[i] || newh[i] !== oldh[i] ){
-						oldw = neww;
-						oldh = newh;
-						instance.debouncedResize();
-						break;
+				var oldw = [], oldh = [];
+				(function resizeLoop(instance){
+					var neww = [], newh = [];
+					var settings = newInstance.settings;
+					newInstance.$el.each(function(i, element){
+						var $element = $(element);
+						neww.push($element.width());
+						newh.push($element.height());
+					});
+					var i = neww.length;
+					while(i--){
+						if( neww[i] !== oldw[i] || newh[i] !== oldh[i] ){
+							oldw = neww;
+							oldh = newh;
+							newInstance.debouncedResize();
+							break;
+						}
 					}
-				}
-				instance.observerHandler = setRAFTimeout(function(){resizeLoop(instance);}, settings.debounce);
-			}
-			resizeLoop(newInstance);
+					newInstance.observerHandler = setRAFTimeout(resizeLoop, settings.debounce);
+				})();
 			break;
 		}
 

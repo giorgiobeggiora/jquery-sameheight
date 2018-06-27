@@ -3,11 +3,19 @@
 	<title>jQuery SameHeight Demo</title>
 	<meta charset="utf-8" />
 	<style>
-		body { margin: 0; padding: 0; font-family: Arial; font-size: 10px; }
+		body { margin: 0; padding: 0; }
+		body, button { font-family: Arial; font-size: 10px; }
 		form { margin: 0; padding: 16px 16px 16px 0; }
 		label { display: block; }
+		button:disabled { opacity: 0.5; }
 		h1 { margin: 0; padding: 16px; }
-		table { width: 100%; }
+		a { color: #00f; }
+		table {
+			width: 100%;
+			table-layout: fixed; /* IE11 fix to make flex calculate width correctly (but TDs does not adapt anymore) */
+		}
+		td.controls { width: 170px; }
+
 		.first-letter { font-size: 2em;	}
 		.box { background-color: #cccccc; height: 100px; }
 	</style>
@@ -16,7 +24,7 @@
 			width: 50%;
 			margin: 16px auto;
 		}
-		.target .box {
+		.target .box .padding {
 			padding: 16px;
 		}
 	</style>
@@ -37,6 +45,8 @@
 		.float-wrapper .item .box {
 			margin-left: 16px;
 			margin-bottom: 16px;
+		}
+		.float-wrapper .item .box .padding {
 			padding: 16px;
 		}
 		.float-wrapper .item:nth-child(2n) .box {
@@ -58,6 +68,8 @@
 	.columns-wrapper .item .box {
 		margin-left: 16px;
 		margin-bottom: 16px;
+	}
+	.columns-wrapper .item .box .padding {
 		padding: 16px;
 	}
 	</style>
@@ -74,6 +86,8 @@
 	.flex-wrapper .item .box {
 		margin-left: 16px;
 		margin-bottom: 16px;
+	}
+	.flex-wrapper .item .box .padding {
 		padding: 16px;
 	}
 	</style>
@@ -83,7 +97,7 @@
 			<td class="demo">
 				<div class="target" id="target" style="display: none;">
 					<h1>target</h1>
-					<div class="item"><div class="box">
+					<div class="item"><div class="box"><div class="padding">
 						<span class="first-letter">T</span>
 						lorem ipsum lorem ipsum lorem ipsum
 						lorem ipsum lorem ipsum lorem ipsum
@@ -93,75 +107,79 @@
 						lorem ipsum lorem ipsum lorem ipsum
 						lorem ipsum lorem ipsum lorem ipsum
 						lorem ipsum lorem ipsum lorem ipsum
-					</div></div>
+					</div></div></div>
 				</div>
 				<h1>float: left;</h1>
 				<div id="test-float" class="float-wrapper">
-					<div class="item float-left"><div class="box">
+					<div class="item float-left"><div class="box"><div class="padding">
 						<span class="first-letter">A</span>
 						lorem ipsum lorem ipsum lorem ipsum
 						lorem ipsum lorem ipsum lorem ipsum
-					</div></div>
-					<div class="item float-left"><div class="box">
+					</div></div></div>
+					<div class="item float-left"><div class="box"><div class="padding">
 						<span class="first-letter">B</span>
 						lorem ipsum lorem ipsum lorem ipsum
 						lorem ipsum lorem ipsum lorem ipsum
 						lorem ipsum lorem ipsum lorem ipsum
 						lorem ipsum lorem ipsum lorem ipsum
-					</div></div>
-					<div class="item float-left"><div class="box">
+					</div></div></div>
+					<div class="item float-left"><div class="box"><div class="padding">
 						<span class="first-letter">C</span>
 						lorem ipsum lorem ipsum lorem ipsum
-					</div></div>
+					</div></div></div>
 				</div>
 
 				<h1>column-count: 2;</h1>
 				<div id="test-columns" class="columns-wrapper">
-					<div class="item"><div class="box">
+					<div class="item"><div class="box"><div class="padding">
 						<span class="first-letter">A</span>
 						lorem ipsum lorem ipsum lorem ipsum
 						lorem ipsum lorem ipsum lorem ipsum
-					</div></div>
-					<div class="item"><div class="box">
+					</div></div></div>
+					<div class="item"><div class="box"><div class="padding">
 						<span class="first-letter">B</span>
 						lorem ipsum lorem ipsum lorem ipsum
 						lorem ipsum lorem ipsum lorem ipsum
 						lorem ipsum lorem ipsum lorem ipsum
 						lorem ipsum lorem ipsum lorem ipsum
-					</div></div>
-					<div class="item"><div class="box">
+					</div></div></div>
+					<div class="item"><div class="box"><div class="padding">
 						<span class="first-letter">C</span>
 						lorem ipsum lorem ipsum lorem ipsum
-					</div></div>
+					</div></div></div>
 				</div>
 
 				<h1>display: flex;</h1>
 				<div id="test-flex" class="flex-wrapper">
-					<div class="item"><div class="box">
+					<div class="item"><div class="box"><div class="padding">
 						<span class="first-letter">A</span>
 						lorem ipsum lorem ipsum lorem ipsum
 						lorem ipsum lorem ipsum lorem ipsum
-					</div></div>
-					<div class="item"><div class="box">
+					</div></div></div>
+					<div class="item"><div class="box"><div class="padding">
 						<span class="first-letter">B</span>
 						lorem ipsum lorem ipsum lorem ipsum
 						lorem ipsum lorem ipsum lorem ipsum
 						lorem ipsum lorem ipsum lorem ipsum
 						lorem ipsum lorem ipsum lorem ipsum
-					</div></div>
-					<div class="item"><div class="box">
+					</div></div></div>
+					<div class="item"><div class="box"><div class="padding">
 						<span class="first-letter">C</span>
 						lorem ipsum lorem ipsum lorem ipsum
-					</div></div>
+					</div></div></div>
 				</div>
 			</td>
 			<td class="controls" nowrap>
 				<form>
+					<b><a href="https://github.com/giorgiobeggiora/jquery-sameheight" target="_blank" rel="noopener">JQUERY SAME HEIGHT</a></b><br />
+					<br />
+					<button id="btn-observe">OBSERVE</button>
+					<button id="btn-stop">STOP</button><br />
+					<br />
 					<b>OPTIONS</b><br />
 					<br />
-					<a href="https://github.com/giorgiobeggiora/jquery-sameheight" target="_blank" rel="noopener">Documentation</a><br />
-					<br />
 					The first value is the default one.<br />
+					<br />
 					<br />
 					<b>observe</b><br />
 					<label title="window"><input type="radio" name="observe" value="window" /> Observe window</label>
@@ -198,13 +216,14 @@
 	<script src="jquery.sameheight.js"></script>
 
 	<script>
+
 		var options = {
 			compact: false,
 			responsive: true,
 			target: null,
 			observe: window,
 			debounce: 0,
-			columnCount: 1
+			columnCount: 'num'
 		};
 
 		function convertToOptionsValue (key, value) {
@@ -259,6 +278,9 @@
 		$('input[name="target"]').on('click', reloadWithOptions);
 		$('input[name="columnCount"]').on('click', reloadWithOptions);
 
+		$('#btn-observe').on('click', startObserve);
+		$('#btn-stop').on('click', stopObserve);
+
 		if (options.target) $('#target').show();
 
 		var columnCount;
@@ -266,7 +288,12 @@
 		var handler1;
 		var handler2;
 
-		function startObserve() {
+		function startObserve(ev) {
+
+			if (ev) ev.preventDefault();
+
+			$('#btn-observe').prop('disabled', true);
+			$('#btn-stop').prop('disabled', false);
 
 			columnCount = options.columnCount;
 			if (columnCount === 'num') columnCount = 1;
@@ -302,5 +329,21 @@
 			});
 
 		}
+
+		function stopObserve(ev) {
+
+			if (ev) ev.preventDefault();
+
+			$('#btn-observe').prop('disabled', false);
+			$('#btn-stop').prop('disabled', true);
+
+			handler0.stop();
+			handler1.stop();
+			handler2.stop();
+
+		}
+
+		startObserve();
+
 	</script>
 </body></html>

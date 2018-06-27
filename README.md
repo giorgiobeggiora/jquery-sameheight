@@ -4,10 +4,12 @@ This jQuery plugin sets all the matched elements' height to the highest one with
 
 The plugin will manage **image loading** (elements will be resized when contained images will have their own height setted, i.e. during their download).
 
-It's compatible with elements contained in a [CSS columns](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Columns) layout.
+It can handle elements contained in a [CSS columns](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Columns) layout.
 
-To achieve the most fluid animation possible, the plugin will try to use [ResizeObserver](https://developers.google.com/web/updates/2016/10/resizeobserver) or, if not available, [CSS-Element-Queries](https://github.com/marcj/css-element-queries). Otherwise, a `requestAnimationFrame` loop that continuosly 
+To achieve the most fluid animation possible, the plugin will try to use [ResizeObserver](https://developers.google.com/web/updates/2016/10/resizeobserver) or, if not available, [CSS-Element-Queries](https://github.com/marcj/css-element-queries). Otherwise, a `requestAnimationFrame` loop that continuosly
 checks the DOM for changes in the heights of the elements will be used.
+
+It's compatible with IE11 and with the main modern browsers.
 
 ## Options
 
