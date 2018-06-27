@@ -19,6 +19,7 @@ An instance of the observer with the `stop()` method to stop listening the resiz
 - `observe` *(window|DOM element, default = window)*: elements which size changes must be detected.
 - `columnCount` *(number|string, default = 1)*: closest ancestor's CSS column-count property's value ('auto' is not supported). If set as 'calc', each time the resize event is triggered the DOM will be traversed upward until an element with a column-count value greater than 1 will be found, so it's better to avoid it and explicitly set a number.
 
-## Smooth resize
+## How it works
 
-To achieve the most fluid animation possible, the plugin will try to use [ResizeObserver](https://developers.google.com/web/updates/2016/10/resizeobserver) or, if not available, [CSS-Element-Queries](https://github.com/marcj/css-element-queries). Otherwise, some frameskip may occur, because `requestAnimationFrame` will be used.
+To achieve the most fluid animation possible, the plugin will try to use [ResizeObserver](https://developers.google.com/web/updates/2016/10/resizeobserver) or, if not available, [CSS-Element-Queries](https://github.com/marcj/css-element-queries). Otherwise, a `requestAnimationFrame` loop that continuosly 
+checks the DOM for changes in the heights of the elements will be used.
