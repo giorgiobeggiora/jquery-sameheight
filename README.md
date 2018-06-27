@@ -16,7 +16,7 @@ checks the DOM for changes in the heights of the elements will be used.
 - `target` *(DOM element)*: if given, the height will be its one
 - `debounce` *(number)*: debounce in milliseconds (will be rounded by `requestAnimationFrame`).
 - `observe` *(window|DOM element, default = window)*: elements which size changes must be detected.
-- `columnCount` *(number|string, default = 1)*: closest ancestor's CSS column-count property's value ('auto' is not supported). If set as 'calc', each time the resize event is triggered the DOM will be traversed upward until an element with a column-count value greater than 1 will be found, so it's better to avoid it and explicitly set a number.
+- `columnCount` *(number|string, default = 1)*: closest ancestor's CSS column-count property's value ('auto' is not supported). If set to 'calc', each time the resize event is triggered the DOM will be traversed upward until an element with a column-count value greater than 1 will be found, so it's better to avoid it and explicitly set a number.
 
 ## Returns
 
